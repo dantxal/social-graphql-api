@@ -1,22 +1,21 @@
+import 'dotenv/config';
 import koaPlayground from 'graphql-playground-middleware-koa';
-
 import { GraphQLError } from 'graphql';
-import schema from './schema'; //eslint-disable-line
 
-import Koa = require('koa');
+import schema from './schema';
 
-import Bodyparser = require('koa-bodyparser');
-
-import Router = require('@koa/router');
-
+const Koa = require('koa');
+const graphqlHTTP = require('koa-graphql');
+const Router = require('@koa/router');
+const cors = require('@koa/cors');
+const Bodyparser = require('koa-bodyparser');
 const mongoose = require('mongoose');
 
-const graphqlHTTP = require('koa-graphql');
-const cors = require('@koa/cors');
+const { MONGO_URL } = process.env;
 
-require('dotenv').config();
+if (!MONGO_URL) throw new Error('Please set MONGO_URL environment variable');
 
-mongoose.connect(process.env.MONGO_URL, {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -33,7 +32,7 @@ router.get('/', (ctx, next) => {
   return next();
 });
 
-const graphqlSettingsPerReq = async (req: Request) => {
+const graphqlSettingsPerReq = async (req): Promise<graphqlHTTP.OptionsData> => {
   return {
     graphiql: process.env.NODE_ENV !== 'production',
     schema,

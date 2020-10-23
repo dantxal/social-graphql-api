@@ -20,24 +20,20 @@ import { loadAllComments } from './modules/Comment/CommentLoader';
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
+    description: 'The root of all queries',
     fields: {
       node: nodeField,
       posts: {
-        type: GraphQLNonNull(PostConnection),
+        type: GraphQLNonNull(PostConnection.connectionType),
         args: {
           ...connectionArgs,
         },
         resolve: async (_, args, context) => loadAllPosts(context, args),
       },
       comments: {
-        type: GraphQLNonNull(CommentConnection),
+        type: GraphQLNonNull(CommentConnection.connectionType),
         args: {
           ...connectionArgs,
-          banana: {
-            type: GraphQLString,
-            defaultValue: 'banana',
-            description: 'Custom Filter',
-          },
         },
         resolve: async (_, args, context) => loadAllComments(context, args),
       },

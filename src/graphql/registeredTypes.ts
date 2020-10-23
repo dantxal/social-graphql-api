@@ -4,7 +4,7 @@ import Post from '../modules/Post/PostModel';
 
 import Comment from '../modules/Comment/CommentModel';
 
-import {loadComment} from "../modules/Comment/CommentLoader";
+import { loadComment } from '../modules/Comment/CommentLoader';
 
 const registeredTypes = [
   {
@@ -13,14 +13,12 @@ const registeredTypes = [
     dbType: Post,
     loader: loadPost,
   },
-
   {
     name: 'Comment',
     qlType: 'CommentType',
     dbType: Comment,
     loader: loadComment,
   },
-
 ];
 
 export default registeredTypes;
