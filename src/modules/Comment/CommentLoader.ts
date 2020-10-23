@@ -7,7 +7,7 @@ type FixMe = any;
 const DataLoader = require('dataloader');
 
 const commentLoader = new DataLoader((keys: readonly string[]) =>
-  Comment.find({ _id: { $in: keys } }),
+  Comment.find({ _id: { $in: keys } }).sort('-createdAt'),
 );
 
 const loadComment = async (_: FixMe, id: FixMe): Promise<IComment> =>
@@ -23,7 +23,7 @@ const loadAllComments = (
   startCursorOffset: number;
   pageInfo: unknown;
 }> => {
-  const cursor = Comment.find().sort({});
+  const cursor = Comment.find().sort('-createdAt');
 
   return connectionFromMongoCursor({
     cursor,

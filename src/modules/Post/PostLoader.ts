@@ -7,7 +7,7 @@ type FixMe = any;
 const DataLoader = require('dataloader');
 
 const postLoader = new DataLoader((keys: readonly string[]) =>
-  Post.find({ _id: { $in: keys } }),
+  Post.find({ _id: { $in: keys } }).sort('-createdAt'),
 );
 
 const loadPost = async (_: FixMe, id: FixMe): Promise<IPost> => {
@@ -24,7 +24,7 @@ const loadAllPosts = (
   startCursorOffset: number;
   pageInfo: unknown;
 }> => {
-  const cursor = Post.find().sort({});
+  const cursor = Post.find().sort('-createdAt');
 
   return connectionFromMongoCursor({
     cursor,
