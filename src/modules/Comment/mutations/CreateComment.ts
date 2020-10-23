@@ -8,7 +8,7 @@ import {
 } from 'graphql-relay';
 import { CommentConnection } from '../CommentType';
 
-import { loadComment } from '../CommentLoader';
+import { loadAllComments } from '../CommentLoader';
 import CommentModel from '../CommentModel';
 import { loadPost } from '../../Post/PostLoader';
 
@@ -26,15 +26,11 @@ export const mutation = mutationWithClientMutationId({
   outputFields: {
     commentEdge: {
       type: CommentConnection.edgeType,
-      resolve: async ({ id }, _, ctx) => {
-        const comment = await loadComment(ctx, id);
-
-        if (!comment) {
-          return null;
-        }
+      resolve: async (comment, _, ctx) => {
+        const comments = await loadAllComments(ctx, { first: 1 });
 
         return {
-          cursor: toGlobalId('CommentType', comment._id),
+          cursor: comments.edges[0].cursor,
           node: comment,
         };
       },

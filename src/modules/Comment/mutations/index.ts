@@ -4,5 +4,5 @@ import DeleteComment from './DeleteComment';
 
 export default {
   CreateComment,
-  DeleteComment
+  DeleteComment,
 };

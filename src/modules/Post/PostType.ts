@@ -28,7 +28,7 @@ const postType = new GraphQLObjectType<IPost>({
       },
     },
     comments: {
-      type: CommentConnection.edgeType,
+      type: CommentConnection.connectionType,
       args: connectionArgs,
       resolve: async (post, args, ctx) => {
         return connectionFromArray(
