@@ -54,17 +54,6 @@
     "prettier": "^2.1.1",
     "ts-node-dev": "^1.0.0-pre.62"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix"
-    ]
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
