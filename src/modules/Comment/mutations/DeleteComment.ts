@@ -23,16 +23,16 @@ export const mutation = mutationWithClientMutationId({
     try {
       const { _, id } = fromGlobalId(commentId);
       const comment = await loadComment('', id);
-      const postFinded = await loadPost('', comment.postId);
-      postFinded.comments = postFinded.comments.filter(
+      const postFound = await loadPost('', comment.postId);
+      postFound.comments = postFound.comments.filter(
         el => el.toString() !== id.toString(),
       );
-      await postFinded.save();
+      await postFound.save();
       await comment.deleteOne();
 
       return comment;
     } catch (err) {
-      console.log(err);
+      console.error(err);
 
       return err;
     }
