@@ -1,9 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import { GraphQLString } from 'graphql';
 
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 import PostModel from '../PostModel';
 
-import postType from '../PostType';
+import { PostConnection } from '../PostType';
 import { loadPost } from '../PostLoader';
 
 export const mutation = mutationWithClientMutationId({
@@ -18,9 +19,20 @@ export const mutation = mutationWithClientMutationId({
     },
   },
   outputFields: {
-    post: {
-      type: postType,
-      resolve: async (post, _, ctx) => loadPost(ctx, post.id),
+    postEdge: {
+      type: PostConnection.edgeType,
+      resolve: async ({ id }, _, ctx) => {
+        const post = await loadPost(ctx, id);
+
+        if (!post) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId('PostType', post._id),
+          node: post,
+        };
+      },
     },
   },
   mutateAndGetPayload: async ({ title, text }) => {

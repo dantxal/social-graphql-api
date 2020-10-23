@@ -24,7 +24,8 @@ const commentType = new GraphQLObjectType<IComment>({
   interfaces: [nodeInterface],
 });
 
-export const { connectionType: CommentConnection } = connectionDefinitions({
+export const CommentConnection = connectionDefinitions({
+  name: 'Comment',
   nodeType: commentType,
 });
 
