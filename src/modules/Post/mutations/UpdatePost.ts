@@ -1,25 +1,37 @@
-import { GraphQLID, GraphQLString } from 'graphql';
-
+/* eslint-disable no-underscore-dangle */
+import { GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
+import { Context } from 'koa';
 
 import postType from '../PostType';
 import { loadPost } from '../PostLoader';
+import { IPost } from '../PostModel';
+
+interface IDeletePostInputPayload {
+  title: string;
+  text: string;
+  postId: string;
+}
+type IDeletePostPayload = IPost;
 
 export const mutation = mutationWithClientMutationId({
   name: 'PostUpdate',
   description: 'Update post',
   inputFields: {
     title: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLString),
     },
     text: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLString),
     },
     postId: {
-      type: GraphQLID,
+      type: GraphQLNonNull(GraphQLID),
     },
   },
-  mutateAndGetPayload: async ({ title, text, postId }, ctx) => {
+  mutateAndGetPayload: async (
+    { title, text, postId }: IDeletePostInputPayload,
+    ctx: Context,
+  ) => {
     try {
       const { id } = fromGlobalId(postId);
       const post = await loadPost(ctx, id);
@@ -36,8 +48,12 @@ export const mutation = mutationWithClientMutationId({
   },
   outputFields: {
     post: {
-      type: postType,
-      resolve: async (post, _, ctx) => loadPost(ctx, post.id),
+      type: GraphQLNonNull(postType),
+      resolve: async (
+        post: IDeletePostPayload,
+        _: { [argName: string]: any },
+        ctx: Context,
+      ) => loadPost(ctx, post.id),
     },
   },
 });
