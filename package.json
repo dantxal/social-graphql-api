@@ -10,7 +10,8 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "prestart": "yarn build",
-    "start": "ts-node dist/src/server.js"
+    "start": "ts-node dist/src/server.js",
+    "prod": "node dist/src/server.js"
   },
   "dependencies": {
     "@entria/graphql-mongoose-loader": "^4.3.2",
