@@ -8,7 +8,6 @@ Features:
 -   You can create posts and comments;
 -   GraphiQL Playground at PORT/graphiql;
 -   Integration with a Mongo database (mongoose);
--   Completely typed;
 -   Relay compatible pagination (first, last, after, before);
 -   Seeding script of posts and comments, with logs;
 -   ESLint and Prettier configured.
