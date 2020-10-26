@@ -1,5 +1,4 @@
-import { GraphQLString } from 'graphql';
-
+import { GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { Context } from 'koa';
 
@@ -8,21 +7,30 @@ import { loadAllComments } from '../CommentLoader';
 import CommentModel from '../CommentModel';
 import { loadPost } from '../../Post/PostLoader';
 
+interface ICreateCommentPayload {
+  text: string;
+  postId: string;
+}
+
 export const mutation = mutationWithClientMutationId({
   name: 'CommentCreation',
   description: 'Create new comment',
   inputFields: {
     postId: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLID),
     },
     text: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLString),
     },
   },
   outputFields: {
     commentEdge: {
       type: CommentConnection.edgeType,
-      resolve: async (comment, args, ctx) => {
+      resolve: async (
+        comment: ICreateCommentPayload,
+        args: { [argName: string]: any },
+        ctx: Context,
+      ) => {
         const comments = await loadAllComments(ctx, { first: 1 });
 
         return {
@@ -32,7 +40,10 @@ export const mutation = mutationWithClientMutationId({
       },
     },
   },
-  mutateAndGetPayload: async ({ postId, text }, ctx: Context) => {
+  mutateAndGetPayload: async (
+    { postId, text }: ICreateCommentPayload,
+    ctx: Context,
+  ) => {
     try {
       const { id } = fromGlobalId(postId);
 

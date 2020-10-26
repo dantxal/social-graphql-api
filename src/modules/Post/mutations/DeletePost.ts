@@ -1,26 +1,37 @@
-import { GraphQLString } from 'graphql';
+/* eslint-disable no-underscore-dangle */
+import { GraphQLString, GraphQLNonNull, GraphQLArgument } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
+import { Context } from 'koa';
+
 import postType from '../PostType';
 import { loadPost } from '../PostLoader';
 import { loadComment } from '../../Comment/CommentLoader';
-import PostModel from '../PostModel';
+import PostModel, { IPost } from '../PostModel';
+
+interface IDeletePostInputPayload {
+  postId: string;
+}
+type IDeletePostPayload = IPost;
 
 export const mutation = mutationWithClientMutationId({
   name: 'PostDeletion',
   description: 'Delete post',
   inputFields: {
     postId: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLString),
     },
   },
   outputFields: {
     payload: {
-      type: postType,
-      resolve: test => test,
+      type: GraphQLNonNull(postType),
+      resolve: (post: IDeletePostPayload) => post,
     },
   },
 
-  mutateAndGetPayload: async ({ postId }, ctx) => {
+  mutateAndGetPayload: async (
+    { postId }: IDeletePostInputPayload,
+    ctx: Context,
+  ) => {
     try {
       const { id } = fromGlobalId(postId);
       const post = await loadPost(ctx, id);
@@ -35,7 +46,7 @@ export const mutation = mutationWithClientMutationId({
       ]);
 
       return post;
-    } catch (err) {
+    } catch (err: unknown) {
       // eslint-disable-next-line
       console.log(err);
 

@@ -1,26 +1,36 @@
-import { GraphQLString } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { Context } from 'koa';
+
 import { loadPost } from '../../Post/PostLoader';
 import { loadComment } from '../CommentLoader';
+import { IComment } from '../CommentModel';
 import commentType from '../CommentType';
+
+interface IDeleteCommentInputPayload {
+  commentId: string;
+}
+type IDeleteCommentPayload = IComment;
 
 export const mutation = mutationWithClientMutationId({
   name: 'CommentDeletion',
   description: 'Delete comment',
   inputFields: {
     commentId: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLString),
     },
   },
   outputFields: {
     payload: {
-      type: commentType,
-      resolve: test => test,
+      type: GraphQLNonNull(commentType),
+      resolve: (comment: IDeleteCommentPayload) => comment,
     },
   },
 
-  mutateAndGetPayload: async ({ commentId }, ctx: Context) => {
+  mutateAndGetPayload: async (
+    { commentId }: IDeleteCommentInputPayload,
+    ctx: Context,
+  ) => {
     try {
       const { id } = fromGlobalId(commentId);
       const comment = await loadComment(ctx, id);
