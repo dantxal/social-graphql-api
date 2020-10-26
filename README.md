@@ -10,7 +10,8 @@ Features:
 -   Integration with a Mongo database (mongoose);
 -   Completely typed;
 -   Relay compatible pagination (first, last, after, before);
--   Seeding script of posts and comments, with logs.
+-   Seeding script of posts and comments, with logs;
+-   ESLint and Prettier configured.
 
 ## Installation & Usage
 
