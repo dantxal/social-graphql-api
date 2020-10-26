@@ -1,1 +1,1 @@
-api: yarn prod
+api: yarn dev
