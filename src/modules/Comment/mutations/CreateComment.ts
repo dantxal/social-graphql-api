@@ -1,11 +1,6 @@
-/* eslint-disable no-underscore-dangle */
 import { GraphQLString } from 'graphql';
 
-import {
-  fromGlobalId,
-  mutationWithClientMutationId,
-  toGlobalId,
-} from 'graphql-relay';
+import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { CommentConnection } from '../CommentType';
 
 import { loadAllComments } from '../CommentLoader';
@@ -26,7 +21,7 @@ export const mutation = mutationWithClientMutationId({
   outputFields: {
     commentEdge: {
       type: CommentConnection.edgeType,
-      resolve: async (comment, _, ctx) => {
+      resolve: async (comment, args, ctx) => {
         const comments = await loadAllComments(ctx, { first: 1 });
 
         return {
@@ -38,7 +33,7 @@ export const mutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ postId, text }) => {
     try {
-      const { _, id } = fromGlobalId(postId);
+      const { id } = fromGlobalId(postId);
 
       const comment = new CommentModel({ text, postId: id });
       await comment.save();
@@ -49,6 +44,7 @@ export const mutation = mutationWithClientMutationId({
 
       return comment;
     } catch (err) {
+      // eslint-disable-next-line
       console.log(err);
 
       return err;

@@ -7,10 +7,10 @@
   "scripts": {
     "seed": "ts-node scripts/seed.ts",
     "copy-env": "cp .env.example .env",
-    "build": "tsc --diagnostics",
+    "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:dev": "npm run build && node ./dist/server.js",
-    "start": "ts-node src/server.ts"
+    "start": "ts-node dist/src/server.js"
   },
   "dependencies": {
     "@entria/graphql-mongoose-loader": "^4.3.2",

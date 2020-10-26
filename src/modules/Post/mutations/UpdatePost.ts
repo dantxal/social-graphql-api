@@ -21,13 +21,14 @@ export const mutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ title, text, postId }) => {
     try {
-      const { _, id } = fromGlobalId(postId);
+      const { id } = fromGlobalId(postId);
       const post = await loadPost('', id);
       post.title = title;
       post.text = text;
 
       return post.save();
     } catch (err) {
+      // eslint-disable-next-line
       console.log(err);
 
       return err;

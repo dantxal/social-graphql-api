@@ -22,7 +22,7 @@ export const mutation = mutationWithClientMutationId({
 
   mutateAndGetPayload: async ({ postId }) => {
     try {
-      const { _, id } = fromGlobalId(postId);
+      const { id } = fromGlobalId(postId);
       const post = await loadPost('', id);
 
       const comments = await Promise.all(
@@ -36,6 +36,7 @@ export const mutation = mutationWithClientMutationId({
 
       return post;
     } catch (err) {
+      // eslint-disable-next-line
       console.log(err);
 
       return err;

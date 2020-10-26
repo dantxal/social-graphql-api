@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { GraphQLString } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { MutationConfig, mutationWithClientMutationId } from 'graphql-relay';
 import PostModel from '../PostModel';
 
 import { PostConnection } from '../PostType';
@@ -36,11 +36,12 @@ export const mutation = mutationWithClientMutationId({
 
       return newPost.save();
     } catch (err) {
+      // eslint-disable-next-line
       console.log(err);
 
       return err;
     }
   },
-});
+} as MutationConfig);
 
 export default mutation;

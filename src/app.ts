@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import koaPlayground from 'graphql-playground-middleware-koa';
 import { GraphQLError } from 'graphql';
+import { Context, Middleware, Next, Request } from 'koa';
+import { OptionsData } from 'koa-graphql';
 import { connectDatabase } from './database';
 import schema from './schema';
 
@@ -11,53 +13,53 @@ const cors = require('@koa/cors');
 const Bodyparser = require('koa-bodyparser');
 
 const app = new Koa();
-( async () => {
-await connectDatabase()
 
-app.use(Bodyparser());
-app.use(cors());
+(async () => {
+  await connectDatabase();
 
-const router = new Router();
-router.get('/', (ctx, next) => {
-  ctx.body = 'hello visitor';
+  app.use(Bodyparser());
+  app.use(cors());
 
-  return next();
-});
+  const router = new Router();
+  router.get('/', (ctx: Context, next: Next) => {
+    ctx.body = 'hello visitor';
 
-const graphqlSettingsPerReq = async (req): Promise<graphqlHTTP.OptionsData> => {
-  return {
-    graphiql: process.env.NODE_ENV !== 'production',
-    schema,
-    context: {
-      req,
-    },
-    formatError: (error: GraphQLError) => {
-      console.log(error.message);
-      console.log(error.locations);
-      console.log(error.stack);
+    return next();
+  });
 
-      return {
-        message: error.message,
-        locations: error.locations,
-        stack: error.stack,
-      };
-    },
+  const graphqlSettingsPerReq = async (req: Request): Promise<OptionsData> => {
+    return {
+      graphiql: process.env.NODE_ENV !== 'production',
+      schema,
+      context: {
+        req,
+      },
+      formatError: (error: GraphQLError) => {
+        console.log(error.message);
+        console.log(error.locations);
+        console.log(error.stack);
+
+        return {
+          message: error.message,
+          locations: error.locations,
+          stack: error.stack,
+        };
+      },
+    };
   };
-};
 
-const graphqlServer = graphqlHTTP(graphqlSettingsPerReq);
+  const graphqlServer: Middleware = graphqlHTTP(graphqlSettingsPerReq);
 
-router.all('/graphql', graphqlServer);
+  router.all('/graphql', graphqlServer);
 
-router.all(
-  '/graphiql',
-  koaPlayground({
-    endpoint: '/graphql',
-  }),
-);
+  router.all(
+    '/graphiql',
+    koaPlayground({
+      endpoint: '/graphql',
+    }),
+  );
 
-app.use(router.routes()).use(router.allowedMethods());
+  app.use(router.routes()).use(router.allowedMethods());
 })();
 
 export default app;
-

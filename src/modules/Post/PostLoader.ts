@@ -1,8 +1,13 @@
 import { connectionFromMongoCursor } from '@entria/graphql-mongoose-loader';
 import { ConnectionArguments } from 'graphql-relay';
+import { Context } from 'koa';
+import { Types } from 'mongoose';
 import Post, { IPost } from './PostModel';
-
-type FixMe = any;
+/**
+ * Added any because 'object' typing is deprecated but necessary
+ * for connectionFromMongoCursor's options
+ */
+type DataLoaderKey = string | Types.ObjectId | any;
 
 const DataLoader = require('dataloader');
 
@@ -10,12 +15,12 @@ const postLoader = new DataLoader((keys: readonly string[]) =>
   Post.find({ _id: { $in: keys } }).sort('-createdAt'),
 );
 
-const loadPost = async (_: FixMe, id: FixMe): Promise<IPost> => {
+const loadPost = async (_: Context, id: DataLoaderKey): Promise<IPost> => {
   return postLoader.load(id);
 };
 
 const loadAllPosts = (
-  ctx: any,
+  ctx: Context,
   args: ConnectionArguments,
 ): Promise<{
   edges: { cursor: string; node: Promise<IPost> }[];
@@ -28,7 +33,7 @@ const loadAllPosts = (
 
   return connectionFromMongoCursor({
     cursor,
-    context: {},
+    context: {} as Context,
     args,
     loader: loadPost,
   });

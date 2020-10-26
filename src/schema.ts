@@ -1,9 +1,4 @@
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLNonNull,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLNonNull } from 'graphql';
 
 import { connectionArgs } from 'graphql-relay';
 import { nodeField } from './graphql/NodeDefinitions';

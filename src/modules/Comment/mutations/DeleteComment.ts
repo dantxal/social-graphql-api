@@ -21,7 +21,7 @@ export const mutation = mutationWithClientMutationId({
 
   mutateAndGetPayload: async ({ commentId }) => {
     try {
-      const { _, id } = fromGlobalId(commentId);
+      const { id } = fromGlobalId(commentId);
       const comment = await loadComment('', id);
       const postFound = await loadPost('', comment.postId);
       postFound.comments = postFound.comments.filter(
@@ -32,6 +32,7 @@ export const mutation = mutationWithClientMutationId({
 
       return comment;
     } catch (err) {
+      // eslint-disable-next-line
       console.error(err);
 
       return err;

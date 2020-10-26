@@ -1,8 +1,10 @@
 import { connectionFromMongoCursor } from '@entria/graphql-mongoose-loader';
 import { ConnectionArguments } from 'graphql-relay';
+import { Context } from 'koa';
+import { Types } from 'mongoose';
 import Comment, { IComment } from './CommentModel';
 
-type FixMe = any;
+type DataLoaderKey = string | Types.ObjectId;
 
 const DataLoader = require('dataloader');
 
@@ -10,11 +12,11 @@ const commentLoader = new DataLoader((keys: readonly string[]) =>
   Comment.find({ _id: { $in: keys } }).sort('-createdAt'),
 );
 
-const loadComment = async (_: FixMe, id: FixMe): Promise<IComment> =>
+const loadComment = async (_: Context, id: DataLoaderKey): Promise<IComment> =>
   commentLoader.load(id);
 
 const loadAllComments = (
-  ctx: FixMe,
+  ctx: Context,
   args: ConnectionArguments,
 ): Promise<{
   edges: { cursor: string; node: Promise<IComment> }[];
