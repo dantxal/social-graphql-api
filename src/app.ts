@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import koaPlayground from 'graphql-playground-middleware-koa';
 import { GraphQLError } from 'graphql';
-import { Context, Middleware, Next, Request } from 'koa';
+import { Context, Middleware, Next, Request, Response } from 'koa';
 import { OptionsData } from 'koa-graphql';
 import { connectDatabase } from './database';
 import schema from './schema';
@@ -54,6 +54,12 @@ const app = new Koa();
   };
 
   const graphqlServer: Middleware = graphqlHTTP(graphqlSettingsPerReq);
+
+  router.get('/', (ctx: Context, next: Next) => {
+    ctx.body = 'hello visitor';
+
+    return next();
+  });
 
   router.all('/graphql', graphqlServer);
 
