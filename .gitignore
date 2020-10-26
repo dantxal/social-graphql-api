@@ -3,4 +3,5 @@ node_modules
 !.env.example
 
 .idea
+dist/*
 

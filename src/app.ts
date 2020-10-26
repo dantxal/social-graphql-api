@@ -10,9 +10,10 @@ const Router = require('@koa/router');
 const cors = require('@koa/cors');
 const Bodyparser = require('koa-bodyparser');
 
-connectDatabase()
-
 const app = new Koa();
+( async () => {
+await connectDatabase()
+
 app.use(Bodyparser());
 app.use(cors());
 
@@ -56,5 +57,7 @@ router.all(
 );
 
 app.use(router.routes()).use(router.allowedMethods());
+})();
 
 export default app;
+

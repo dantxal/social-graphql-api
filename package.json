@@ -5,8 +5,9 @@
   "author": "dantxal",
   "license": "MIT",
   "scripts": {
+    "seed": "ts-node scripts/seed.ts",
     "copy-env": "cp .env.example .env",
-    "build": "npx tsc",
+    "build": "tsc --diagnostics",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:dev": "npm run build && node ./dist/server.js",
     "start": "ts-node src/server.ts"
