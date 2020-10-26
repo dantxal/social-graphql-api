@@ -24,7 +24,7 @@
     "@koa/router": "^9.4.0",
     "dataloader": "^2.0.0",
     "dotenv": "^8.2.0",
-    "graphql": "^15.3.0",
+    "graphql": "^14.0.0",
     "graphql-api-koa": "^6.0.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-playground-middleware-koa": "^1.6.19",
