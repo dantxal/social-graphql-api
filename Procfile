@@ -1,1 +1,1 @@
-api: yarn dev
+web: yarn dev
