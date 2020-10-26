@@ -1,1 +1,1 @@
-api: yarn start
+api: yarn dev
