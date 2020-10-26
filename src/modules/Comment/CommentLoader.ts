@@ -3,8 +3,12 @@ import { ConnectionArguments } from 'graphql-relay';
 import { Context } from 'koa';
 import { Types } from 'mongoose';
 import Comment, { IComment } from './CommentModel';
-
-type DataLoaderKey = string | Types.ObjectId;
+/**
+ * Added any because 'object' typing is deprecated but necessary
+ * for connectionFromMongoCursor's options
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DataLoaderKey = string | Types.ObjectId | any;
 
 const DataLoader = require('dataloader');
 
@@ -29,7 +33,7 @@ const loadAllComments = (
 
   return connectionFromMongoCursor({
     cursor,
-    context: {},
+    context: {} as Context,
     args,
     loader: loadComment,
   });

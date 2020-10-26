@@ -1,10 +1,9 @@
 import { Document, Schema, model } from 'mongoose';
-import { IComment } from '../Comment/CommentModel';
 
 export interface IPost extends Document {
   title: string;
   text: string;
-  comments: IComment[];
+  comments: Schema.Types.ObjectId[];
 }
 const schema = new Schema(
   {

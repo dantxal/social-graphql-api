@@ -1,4 +1,5 @@
 import { nodeDefinitions, fromGlobalId } from 'graphql-relay';
+import { Context } from 'koa';
 import registeredTypes from './registeredTypes';
 
 export const { nodeInterface, nodeField } = nodeDefinitions(
@@ -8,7 +9,7 @@ export const { nodeInterface, nodeField } = nodeDefinitions(
       return type === x.name;
     });
 
-    return registeredType?.loader({}, id);
+    return registeredType?.loader({} as Context, id);
   },
   obj => {
     const registeredType = registeredTypes.find(x => obj instanceof x.dbType);

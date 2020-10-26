@@ -20,13 +20,13 @@ export const mutation = mutationWithClientMutationId({
     },
   },
 
-  mutateAndGetPayload: async ({ postId }) => {
+  mutateAndGetPayload: async ({ postId }, ctx) => {
     try {
       const { id } = fromGlobalId(postId);
-      const post = await loadPost('', id);
+      const post = await loadPost(ctx, id);
 
       const comments = await Promise.all(
-        post.comments.map(comment => loadComment({}, comment)),
+        post.comments.map(comment => loadComment(ctx, comment)),
       );
 
       await Promise.all([

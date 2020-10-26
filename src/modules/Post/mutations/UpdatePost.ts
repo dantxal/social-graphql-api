@@ -19,10 +19,10 @@ export const mutation = mutationWithClientMutationId({
       type: GraphQLID,
     },
   },
-  mutateAndGetPayload: async ({ title, text, postId }) => {
+  mutateAndGetPayload: async ({ title, text, postId }, ctx) => {
     try {
       const { id } = fromGlobalId(postId);
-      const post = await loadPost('', id);
+      const post = await loadPost(ctx, id);
       post.title = title;
       post.text = text;
 

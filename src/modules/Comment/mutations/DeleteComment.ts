@@ -1,5 +1,6 @@
 import { GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
+import { Context } from 'koa';
 import { loadPost } from '../../Post/PostLoader';
 import { loadComment } from '../CommentLoader';
 import commentType from '../CommentType';
@@ -19,11 +20,11 @@ export const mutation = mutationWithClientMutationId({
     },
   },
 
-  mutateAndGetPayload: async ({ commentId }) => {
+  mutateAndGetPayload: async ({ commentId }, ctx: Context) => {
     try {
       const { id } = fromGlobalId(commentId);
-      const comment = await loadComment('', id);
-      const postFound = await loadPost('', comment.postId);
+      const comment = await loadComment(ctx, id);
+      const postFound = await loadPost(ctx, comment.postId);
       postFound.comments = postFound.comments.filter(
         el => el.toString() !== id.toString(),
       );

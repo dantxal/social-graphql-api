@@ -1,8 +1,9 @@
 import { GraphQLString } from 'graphql';
 
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { CommentConnection } from '../CommentType';
+import { Context } from 'koa';
 
+import { CommentConnection } from '../CommentType';
 import { loadAllComments } from '../CommentLoader';
 import CommentModel from '../CommentModel';
 import { loadPost } from '../../Post/PostLoader';
@@ -31,14 +32,14 @@ export const mutation = mutationWithClientMutationId({
       },
     },
   },
-  mutateAndGetPayload: async ({ postId, text }) => {
+  mutateAndGetPayload: async ({ postId, text }, ctx: Context) => {
     try {
       const { id } = fromGlobalId(postId);
 
       const comment = new CommentModel({ text, postId: id });
       await comment.save();
 
-      const post = await loadPost('', id);
+      const post = await loadPost(ctx, id);
       post.comments.push(comment.id);
       await post.save();
 

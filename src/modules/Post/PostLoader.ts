@@ -7,6 +7,7 @@ import Post, { IPost } from './PostModel';
  * Added any because 'object' typing is deprecated but necessary
  * for connectionFromMongoCursor's options
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DataLoaderKey = string | Types.ObjectId | any;
 
 const DataLoader = require('dataloader');

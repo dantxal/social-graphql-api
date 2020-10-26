@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'dotenv/config';
 import koaPlayground from 'graphql-playground-middleware-koa';
 import { GraphQLError } from 'graphql';
