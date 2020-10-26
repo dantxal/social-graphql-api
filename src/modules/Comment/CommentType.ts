@@ -12,21 +12,21 @@ const commentType = new GraphQLObjectType<IComment>({
     id: globalIdField('Comment'),
     text: {
       type: GraphQLString,
-      resolve: comment => comment.text,
+      resolve: (comment: FixMe) => comment.text,
     },
     createdAt: {
-      type: GraphQLNonNull(GraphQLDateTime),
+      type: GraphQLNonNull(GraphQLDateTime as FixMe),
     },
     updatedAt: {
-      type: GraphQLNonNull(GraphQLDateTime),
+      type: GraphQLNonNull(GraphQLDateTime as FixMe),
     },
   }),
-  interfaces: [nodeInterface],
-});
+  interfaces: [nodeInterface as FixMe],
+} as FixMe);
 
 export const CommentConnection = connectionDefinitions({
   name: 'Comment',
-  nodeType: commentType,
+  nodeType: commentType as FixMe,
 });
 
 export default commentType;

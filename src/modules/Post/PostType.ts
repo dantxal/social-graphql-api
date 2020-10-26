@@ -15,22 +15,22 @@ import { loadComment } from '../Comment/CommentLoader';
 const postType = new GraphQLObjectType<IPost>({
   name: 'PostType',
   description: 'Post Type',
-  fields: () => ({
+  fields: (): FixMe => ({
     id: globalIdField('Post'),
     text: {
       type: GraphQLString,
-      resolve: post => post.text,
+      resolve: (post: FixMe) => post.text,
     },
     title: {
       type: GraphQLString,
-      resolve: post => {
+      resolve: (post: FixMe) => {
         return post.title;
       },
     },
     comments: {
       type: CommentConnection.connectionType,
       args: connectionArgs,
-      resolve: async (post, args, ctx) => {
+      resolve: async (post: FixMe, args: FixMe, ctx: FixMe) => {
         return connectionFromArray(
           post.comments.map(id => loadComment(ctx, id)),
           args,
@@ -38,18 +38,18 @@ const postType = new GraphQLObjectType<IPost>({
       },
     },
     createdAt: {
-      type: GraphQLNonNull(GraphQLDateTime),
+      type: GraphQLNonNull(GraphQLDateTime as FixMe),
     },
     updatedAt: {
-      type: GraphQLNonNull(GraphQLDateTime),
+      type: GraphQLNonNull(GraphQLDateTime as FixMe),
     },
   }),
-  interfaces: [nodeInterface],
+  interfaces: [nodeInterface as FixMe],
 });
 
 export const PostConnection = connectionDefinitions({
   name: 'Post',
-  nodeType: postType,
+  nodeType: postType as FixMe,
 });
 
 export default postType;
