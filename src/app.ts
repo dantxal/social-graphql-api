@@ -16,7 +16,11 @@ const Bodyparser = require('koa-bodyparser');
 const app = new Koa();
 
 (async () => {
-  await connectDatabase();
+  try {
+    await connectDatabase();
+  } catch (err) {
+    console.error(`\nError connecting to database.\n\nError: ${err}`);
+  }
 
   app.use(Bodyparser());
   app.use(cors());
