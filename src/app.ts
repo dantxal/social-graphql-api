@@ -35,7 +35,7 @@ const app = new Koa();
   const graphqlSettingsPerReq = async (req: Request): Promise<OptionsData> => {
     return {
       graphiql: process.env.NODE_ENV !== 'production',
-      schema,
+      schema: schema as FixMe,
       context: {
         req,
       },

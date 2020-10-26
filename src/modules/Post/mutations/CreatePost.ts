@@ -53,6 +53,6 @@ export const mutation = mutationWithClientMutationId({
       return err;
     }
   },
-});
+} as FixMe);
 
 export default mutation;

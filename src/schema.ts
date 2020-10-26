@@ -19,26 +19,28 @@ export default new GraphQLSchema({
     fields: {
       node: nodeField,
       posts: {
-        type: GraphQLNonNull(PostConnection.connectionType),
+        type: PostConnection.connectionType as FixMe,
         args: {
           ...connectionArgs,
         },
-        resolve: async (_, args, context) => loadAllPosts(context, args),
+        resolve: async (_: FixMe, args: FixMe, context: FixMe) =>
+          loadAllPosts(context, args),
       },
       comments: {
-        type: GraphQLNonNull(CommentConnection.connectionType),
+        type: GraphQLNonNull(CommentConnection.connectionType as FixMe),
         args: {
           ...connectionArgs,
         },
-        resolve: async (_, args, context) => loadAllComments(context, args),
+        resolve: async (_: FixMe, args: FixMe, context: FixMe) =>
+          loadAllComments(context, args),
       },
     },
-  }),
+  } as FixMe),
   mutation: new GraphQLObjectType({
     name: 'RootMutationType',
     fields: {
       ...PostMutations,
       ...CommentMutations,
-    },
+    } as FixMe,
   }),
 });

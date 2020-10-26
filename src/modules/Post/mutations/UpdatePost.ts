@@ -56,6 +56,6 @@ export const mutation = mutationWithClientMutationId({
       ) => loadPost(ctx, post.id),
     },
   },
-});
+} as FixMe);
 
 export default mutation;
