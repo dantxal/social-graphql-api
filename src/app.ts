@@ -23,12 +23,7 @@ const app = new Koa();
   }
 
   app.use(Bodyparser());
-  app.use(
-    cors({
-      origin: process.env.ORIGIN,
-      allowMethods: ['GET', 'POST'],
-    } as cors.Options),
-  );
+  app.use(cors({} as cors.Options));
 
   const router = new Router();
   router.get('/', (ctx: Context, next: Next) => {
