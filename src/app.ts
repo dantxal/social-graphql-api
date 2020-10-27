@@ -11,7 +11,6 @@ import schema from './schema';
 const Koa = require('koa');
 const graphqlHTTP = require('koa-graphql');
 const Router = require('@koa/router');
-const cors = require('@koa/cors');
 const Bodyparser = require('koa-bodyparser');
 
 const app = new Koa();
