@@ -4,6 +4,7 @@ import koaPlayground from 'graphql-playground-middleware-koa';
 import { GraphQLError } from 'graphql';
 import { Context, Middleware, Next, Request, Response } from 'koa';
 import { OptionsData } from 'koa-graphql';
+import cors from '@koa/cors';
 import { connectDatabase } from './database';
 import schema from './schema';
 
@@ -23,7 +24,12 @@ const app = new Koa();
   }
 
   app.use(Bodyparser());
-  app.use(cors());
+  app.use(
+    cors({
+      origin: process.env.ORIGIN,
+      allowMethods: ['GET', 'POST'],
+    } as cors.Options),
+  );
 
   const router = new Router();
   router.get('/', (ctx: Context, next: Next) => {
