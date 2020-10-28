@@ -4,7 +4,7 @@ import koaPlayground from 'graphql-playground-middleware-koa';
 import { GraphQLError } from 'graphql';
 import { Context, Middleware, Next, Request } from 'koa';
 import { OptionsData } from 'koa-graphql';
-import cors from '@koa/cors';
+import * as cors from 'kcors';
 import { connectDatabase } from './database';
 import schema from './schema';
 
